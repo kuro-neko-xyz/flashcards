@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import ROUTES from "../app/routes";
 import { addQuiz } from "../features/quizzes/quizzesSlice";
+import { addCard } from "../features/cards/cardsSlice";
 // import selectors
 
 export default function NewQuizForm() {
@@ -22,8 +23,18 @@ export default function NewQuizForm() {
 
     const cardIds = [];
 
-    // create the new cards here and add each card's id to cardIds
-    // create the new quiz here
+    cards.forEach((card) => {
+      const cardId = uuidv4();
+
+      dispatch(
+        addCard({
+          id: cardId,
+          front: card.front,
+          back: card.back,
+        })
+      );
+      cardIds.push(cardId);
+    });
 
     const quizId = uuidv4();
 
@@ -35,6 +46,7 @@ export default function NewQuizForm() {
         cardIds,
       })
     );
+
     navigate(ROUTES.quizzesRoute());
   };
 
